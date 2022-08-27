@@ -52,6 +52,40 @@ def generate_launch_description():
     )
 
     # Spawn all joint controllers
+    diff_drive = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['diff_drive_controller', "-c", "/controller_manager"],
+        output='screen'
+    )
+
+    arm_back = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['arm_back_velocity_controller', "-c", "/controller_manager"],
+        output='screen'
+    )
+
+    arm_front = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['arm_front_velocity_controller', "-c", "/controller_manager"],
+        output='screen'
+    )
+
+    drum_back = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['drum_back_velocity_controller', "-c", "/controller_manager"],
+        output='screen'
+    )
+
+    drum_front = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['drum_front_velocity_controller', "-c", "/controller_manager"],
+        output='screen'
+    )
 
     # Spawn all drivers
 
@@ -75,6 +109,11 @@ def generate_launch_description():
         robot_state_publisher,
         controller_manager,
         joint_state_broad,
+        diff_drive,
+        arm_back,
+        arm_front,
+        drum_back,
+        drum_front,
         delay_rviz_after_joint_state_broad
     ])
 

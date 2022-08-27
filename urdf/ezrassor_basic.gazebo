@@ -1,0 +1,42 @@
+<?xml version='1.0'?>
+
+<robot>
+
+  <gazebo reference="base_link">
+    <selfCollide>0</selfCollide>
+  </gazebo>
+
+  <!-- Wheels -->
+  <gazebo reference="left_wheel_front">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="left_wheel_back">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="right_wheel_front">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="right_wheel_back">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="arm_front">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="arm_back">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="drum_front">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="drum_back">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+</robot>

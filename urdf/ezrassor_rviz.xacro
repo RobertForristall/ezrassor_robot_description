@@ -5,7 +5,6 @@
   <xacro:property name="cameraSize" value="0.01"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
-  <xacro:include filename="$(find ezrassor_robot_description)/urdf/ezrassor.gazebo" />
   <xacro:include filename="$(find ezrassor_robot_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find ezrassor_robot_description)/urdf/macros.xacro" />
 
@@ -17,7 +16,7 @@
   <link name='body'>
     <pose>0 0 0 0 0 0</pose>
     <inertial>
-      <mass value="15.0"/>
+      <mass value="1.5"/>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <inertia
           ixx="0.5" ixy="0" ixz="0"
@@ -66,8 +65,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.18" h="0.2"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.18" h="0.2"/>
     </inertial>
   </link>
 
@@ -92,8 +91,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 3.14159"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.18" h="0.2"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.18" h="0.2"/>
     </inertial>
   </link>
 
@@ -118,8 +117,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.18" h="0.2"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.18" h="0.2"/>
     </inertial>
   </link>
 
@@ -144,8 +143,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 3.14159"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.18" h="0.2"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.18" h="0.2"/>
     </inertial>
   </link>
 
@@ -164,8 +163,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.05" h="0.3"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.05" h="0.3"/>
     </inertial>
   </link>
 
@@ -185,8 +184,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 3.1415"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.05" h="0.3"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.05" h="0.3"/>
       <inertia
         ixx="1.0" ixy="0.0" ixz="0.0"
         iyy="1.0" iyz="0.0"
@@ -215,8 +214,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.1839" h="1.0"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.1839" h="1.0"/>
     </inertial>
   </link>
 
@@ -241,8 +240,8 @@
     </visual>
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 3.14159"/>
-      <mass value="5"/>
-      <xacro:cylinder_inertia m="5" r="0.1839" h="1.0"/>
+      <mass value="0.5"/>
+      <xacro:cylinder_inertia m="0.5" r="0.1839" h="1.0"/>
     </inertial>
   </link>
 
@@ -419,7 +418,7 @@
     <parent link="base_link"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <joint_properties damping="0.0" friction="1.0"/>
   </joint>
 
   <joint type="continuous" name="right_wheel_front_joint">
@@ -428,7 +427,7 @@
     <parent link="base_link"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <joint_properties damping="0.0" friction="1.0"/>
   </joint>
 
   <joint type="continuous" name="left_wheel_back_joint">
@@ -437,7 +436,7 @@
     <parent link="base_link"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <joint_properties damping="0.0" friction="1.0"/>
   </joint>
 
   <joint type="continuous" name="right_wheel_back_joint">
@@ -446,7 +445,7 @@
     <parent link="base_link"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <joint_properties damping="0.0" friction="1.0"/>
   </joint>
 
   <joint type="continuous" name="arm_front_joint">

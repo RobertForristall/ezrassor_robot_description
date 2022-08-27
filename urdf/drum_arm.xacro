@@ -1,0 +1,63 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ezrassor">
+    
+    <xacro:macro name="drum_arm" params="pos">
+        
+        <link name="arm_${pos}">
+            <collision name="collision">
+                <xacro:if value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                </xacro:if>
+                <xacro:unless value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="3.1415 0 3.1415"/>
+                </xacro:unless>
+                <geometry>
+                    <!--
+                        <cylinder radius="0.05" length="0.3"/>
+                    -->
+                    <xacro:drum_arm_mesh/>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <xacro:if value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                </xacro:if>
+                <xacro:unless value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="3.1415 0 3.1415"/>
+                </xacro:unless>
+                <geometry>
+                    <!--
+                        <cylinder radius="0.05" length="0.3"/>
+                    -->
+                    <xacro:drum_arm_mesh/>
+                </geometry>
+            </visual>
+            <inertial>
+                <xacro:if value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                </xacro:if>
+                <xacro:unless value='${pos == "front"}'>
+                    <origin xyz="0 0 0" rpy="0 0 3.1415"/>
+                </xacro:unless>
+                <mass value="1"/>
+                <xacro:cylinder_inertia m="1" r="0.05" h="0.3"/>
+            </inertial>
+        </link>
+
+        <joint type="continuous" name="arm_${pos}_joint">
+            <xacro:if value='${pos == "front"}'>
+                <origin xyz="0.20 0 0" rpy="3.1415 0 0"/>
+            </xacro:if>
+            <xacro:unless value='${pos == "front"}'>
+                <origin xyz="-0.20 0 0" rpy="0 0 0"/>
+            </xacro:unless>
+            <child link="arm_${pos}"/>
+            <parent link="base_link"/>
+            <axis xyz="0 1 0" rpy="0 0 0"/>
+            <limit effort="100" velocity="100"/>
+            <joint_properties damping="0.0" friction="0.0"/>
+        </joint>
+
+        
+
+    </xacro:macro>
+</robot>
