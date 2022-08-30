@@ -10,11 +10,12 @@ controller_manager:
       type: diff_drive_controller/DiffDriveController
 
     arm_front_controller:
-      type: velocity_controllers/JointGroupVelocityController
+      type: effort_controllers/JointGroupEffortController
+      #type: velocity_controllers/JointGroupVelocityController
 
     arm_back_controller:
-      type: velocity_controllers/JointGroupVelocityController
-
+      type: effort_controllers/JointGroupEffortController
+      #type: velocity_controllers/JointGroupVelocityController
     drum_front_controller:
       type: velocity_controllers/JointGroupVelocityController
 
@@ -74,20 +75,26 @@ arm_front_controller:
     joints:
       - arm_front_joint
     command_interfaces:
-      - velocity
+      - effort
+    #  - velocity
     state_interfaces:
       - position
       - velocity
+      - effort
+    pid: {p: 100.0, i: 0.01, d: 10.0}
 
 arm_back_controller:
   ros__parameters:
     joints:
       - arm_back_joint
     command_interfaces:
-      - velocity
+      - effort
+    #  - velocity
     state_interfaces:
       - position
       - velocity
+      - effort
+    pid: {p: 100.0, i: 0.01, d: 10.0}
 
 drum_front_controller:
   ros__parameters:

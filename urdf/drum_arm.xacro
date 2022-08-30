@@ -43,7 +43,7 @@
             </inertial>
         </link>
 
-        <joint type="continuous" name="arm_${pos}_joint">
+        <joint type="revolute" name="arm_${pos}_joint">
             <xacro:if value='${pos == "front"}'>
                 <origin xyz="0.20 0 0" rpy="3.1415 0 0"/>
             </xacro:if>
@@ -53,7 +53,7 @@
             <child link="arm_${pos}"/>
             <parent link="base_link"/>
             <axis xyz="0 1 0" rpy="0 0 0"/>
-            <limit effort="100" velocity="100"/>
+            <limit effort="1000.0" lower="0" upper="0.71" velocity="0.2"/>
             <joint_properties damping="0.0" friction="0.0"/>
         </joint>
 

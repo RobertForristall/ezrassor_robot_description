@@ -9,18 +9,26 @@
   <!-- Wheels -->
   <gazebo reference="left_wheel_front">
     <selfCollide>1</selfCollide>
+    <mu1 value="1.0"/>
+    <mu2 value="0.25"/>
   </gazebo>
 
   <gazebo reference="left_wheel_back">
     <selfCollide>1</selfCollide>
+    <mu1 value="1.0"/>
+    <mu2 value="0.25"/>
   </gazebo>
 
   <gazebo reference="right_wheel_front">
     <selfCollide>1</selfCollide>
+    <mu1 value="1.0"/>
+    <mu2 value="0.25"/>
   </gazebo>
 
   <gazebo reference="right_wheel_back">
     <selfCollide>1</selfCollide>
+    <mu1 value="1.0"/>
+    <mu2 value="0.25"/>
   </gazebo>
 
   <gazebo reference="arm_front">
