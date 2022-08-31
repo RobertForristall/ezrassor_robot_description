@@ -1,8 +1,11 @@
+# Ros2 control controllers for the basic ezrassor rover
 controller_manager:
   ros__parameters:
     update_rate: 1000  # Hz
     use_sim_time: true
 
+    # Joint state broadcaster to publish the 
+    # joint states of the rover in simulation
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 

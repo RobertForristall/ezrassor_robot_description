@@ -6,7 +6,7 @@
 import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess, IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription, DeclareLaunchArgument
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit, OnExecutionComplete
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -18,6 +18,7 @@ def generate_launch_description():
     # Get relevant package directories
     pkg_self = get_package_share_directory('ezrassor_robot_description')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+    pkg_auto = get_package_share_directory('ezrassor_autonomous_control')
 
     # Generate robot description
     model_description = {'robot_description': 
@@ -36,6 +37,12 @@ def generate_launch_description():
             os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
         ),
         #launch_arguments={"world" : world}.items()
+    )
+
+    auto_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_auto, 'launch', 'test_controls_launch.py')
+        )
     )
 
     # Launch robot state publisher
@@ -164,12 +171,17 @@ def generate_launch_description():
                 drum_back,
                 wheel_driver,
                 drum_arm_driver,
-                drum_driver
+                drum_driver,
+                auto_launch
             ]
         )
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument('spawn_x', default_value='0'),
+        DeclareLaunchArgument('spawn_y', default_value='0'),
+        DeclareLaunchArgument('target_x', default_value='-5'),
+        DeclareLaunchArgument('target_y', default_value='-5'),
         gazebo,
         robot_state_publisher,
         spawn_entity,
