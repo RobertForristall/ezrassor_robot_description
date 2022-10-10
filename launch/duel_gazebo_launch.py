@@ -24,14 +24,26 @@ def generate_launch_description():
     pkg_key_listener = get_package_share_directory('keyboard_listener')
 
     basic_model = 'ezrassor_basic.xacro'
+    #paver_model = 'ezrassor_paver.xacro'
+
+    #model_arg = LaunchConfiguration('paver')
 
     # Generate robot description based on model launch condition
     model_description_basic = {'robot_description': 
         xacro.process_file(
             os.path.join(pkg_self, 'urdf', basic_model)
         ).toxml()}
+    #model_description_paver = {'robot_description': 
+    #    xacro.process_file(
+    #        os.path.join(pkg_self, 'urdf', paver_model)
+    #    ).toxml()}
 
     world_file = os.path.join(pkg_self, 'worlds', 'base.world')
+
+    # Get filepath for ros2_controllers config
+    #controllers = os.path.join(pkg_self, 'config/ezrassor_basic_controllers.yaml')
+    
+    # Include Moveit configuration for paver arm
 
     # Include the gazebo launch to load the simulation
     gazebo = IncludeLaunchDescription(
@@ -39,6 +51,7 @@ def generate_launch_description():
             os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
         ),
         launch_arguments={"world": world_file}.items()
+        #launch_arguments={"world" : world_file, 'verbose': 'true'}.items()
     )   
 
     auto_launch = IncludeLaunchDescription(
@@ -60,10 +73,28 @@ def generate_launch_description():
         name='robot_state_publisher',
         output='screen',
         parameters=[model_description_basic],
+        #condition=UnlessCondition(
+        #    PythonExpression(
+        #        int(model_arg)
+        #    )
+        #)
     )
 
+    #robot_state_publisher_paver = Node(
+    #    package='robot_state_publisher',
+    #    executable='robot_state_publisher',
+    #    name='robot_state_publisher',
+    #    output='screen',
+    #    parameters=[model_description_paver],
+    #    condition=IfCondition(
+    #        PythonExpression(
+    #            int(model_arg)
+    #        )
+    #    )
+    #)
 
     # Spawn the model using the spawn entity node
+    
     spawn_entity = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
@@ -77,6 +108,40 @@ def generate_launch_description():
         ],
         output='screen'
     )
+    
+
+    """
+    # Arguments for the spawn_entity node in the ezrassor_arm_v2 package
+    spawn_entity_args = [
+        'standard', 
+        '1', 
+        '0.0', 
+        '0.0', 
+        '0.5', 
+        '0.0', 
+        '0.0', 
+        '0.0'
+    ]
+
+    # Launch the spawn entity node 
+    spawn_entity = Node(
+        package='ezrassor_robot_description',
+        executable ='spawn_rover',
+        arguments=spawn_entity_args,
+        output='screen'
+    )
+
+    """
+
+    # Load the controller_manager node
+    """
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[model_description, controllers],
+        output='screen'
+    )
+    """
     
     joint_state_broad = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
@@ -94,6 +159,11 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'arm_front_controller'],
         output='screen',
+        #condition=UnlessCondition(
+        #    PythonExpression(
+        #        int(model_arg)
+        #    )
+        #)
     )
 
     arm_back = ExecuteProcess(
@@ -106,6 +176,11 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'drum_front_controller'],
         output='screen',
+        #condition=UnlessCondition(
+        #    PythonExpression(
+        #        int(model_arg)
+        #    )
+        #)
     )
 
     drum_back = ExecuteProcess(
@@ -159,9 +234,10 @@ def generate_launch_description():
         DeclareLaunchArgument('target_y', default_value='5'),
         DeclareLaunchArgument('world', default_value=world_file),
         DeclareLaunchArgument('controls', default_value='auto'),
-        DeclareLaunchArgument('model', default_value='basic'),
+        DeclareLaunchArgument('paver', default_value='0'),
         gazebo,
         robot_state_publisher_basic,
+        #robot_state_publisher_paver,
         spawn_entity,
         delay_controller_after_spawn
     ])

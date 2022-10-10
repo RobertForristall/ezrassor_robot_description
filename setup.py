@@ -3,11 +3,18 @@ from setuptools import setup
 package_name = 'ezrassor_robot_description'
 data_files = []
 
+launches = [
+    'launch/rviz_launch.py', 
+    'launch/gazebo_launch.py', 
+    'launch/basic_gazebo_launch.py', 
+    'launch/paver_gazebo_launch.py']
+
 configs = [
     'config/standard_rover/default_position_controllers.yaml',
     'config/rviz_controllers.yaml',
     'config/ezrassor_rviz_config.rviz',
-    'config/ezrassor_basic_controllers.yaml'
+    'config/ezrassor_basic_controllers.yaml',
+    'config/ezrassor_paver_controllers.yaml'
 ]
 
 urdfs = [
@@ -20,7 +27,11 @@ urdfs = [
     'urdf/wheel.xacro',
     'urdf/ezrassor_basic.gazebo',
     'urdf/drum_arm.xacro',
-    'urdf/drum.xacro'
+    'urdf/drum.xacro',
+    'urdf/paver_arm.xacro',
+    'urdf/ezrassor_paver.xacro',
+    'urdf/ezrassor_paver.gazebo',
+    'urdf/ezrassor_prototype.xacro'
 ]
 
 meshes = [
@@ -46,12 +57,17 @@ meshes = [
     'meshes/wheel.dae',
 ]
 
+worlds = [
+    'worlds/base.world'
+]
+
 data_files.append(('share/ament_index/resource_index/packages',['resource/' + package_name]))
 data_files.append(('share/' + package_name, ['package.xml']))
-data_files.append(('share/' + package_name + '/launch', ['launch/rviz_launch.py', 'launch/gazebo_launch.py', 'launch/basic_gazebo_launch.py']))
+data_files.append(('share/' + package_name + '/launch', launches))
 data_files.append(('share/' + package_name + '/meshes', meshes))
 data_files.append(('share/' + package_name + '/urdf', urdfs))
 data_files.append(('share/' + package_name + '/config', configs))
+data_files.append(('share/' + package_name + '/worlds', worlds))
 
 setup(
     name=package_name,

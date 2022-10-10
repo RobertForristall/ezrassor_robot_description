@@ -31,19 +31,55 @@
     <mu2 value="0.25"/>
   </gazebo>
 
-  <gazebo reference="arm_front">
-    <selfCollide>1</selfCollide>
-  </gazebo>
-
   <gazebo reference="arm_back">
     <selfCollide>1</selfCollide>
   </gazebo>
 
-  <gazebo reference="drum_front">
+  <gazebo reference="drum_back">
     <selfCollide>1</selfCollide>
   </gazebo>
 
-  <gazebo reference="drum_back">
+  <gazebo reference="arm_front">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link1">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link2">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link3">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link4">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link5">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="link6">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="arm_camera">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="grabber1">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="grabber2">
+    <selfCollide>1</selfCollide>
+  </gazebo>
+
+  <gazebo reference="platform">
     <selfCollide>1</selfCollide>
   </gazebo>
 

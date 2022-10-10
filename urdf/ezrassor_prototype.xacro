@@ -7,6 +7,7 @@
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/ezrassor_basic.gazebo"/>
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/drum_arm.xacro"/>
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/drum.xacro"/>
+    <xacro:include filename="$(find ezrassor_robot_description)/urdf/paver_arm.xacro"/>
 
     <!--Base Link-->
     <link name='base_link'>
@@ -16,7 +17,7 @@
     <link name="body">
         <inertial>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="1.0"/>
+            <mass value="10.0"/>
             <xacro:box_inertia m="1.0" x="0.8" y="0.3" z="0.1" />
         </inertial>
         <visual name="visual">
@@ -81,12 +82,8 @@
     <xacro:wheel side="right" pos="front"/>
     <xacro:wheel side="right" pos="back"/>
     
-    <xacro:drum_arm pos="front"/>
-    <xacro:drum_arm pos="back"/>
+    <xacro:paver_arm model="prototype"/>
     
-    <xacro:drum pos="front"/>
-    <xacro:drum pos="back"/>
-
     <joint name="imu_joint" type="fixed">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
@@ -129,15 +126,6 @@
             <state_interface name="velocity"/>
             <state_interface name="position"/>
         </joint>
-        <joint name="arm_front_joint">
-            <command_interface name="effort">
-                <param name="min">-100</param>
-                <param name="max">100</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
-            <state_interface name="effort"/>
-        </joint>
         <joint name="arm_back_joint">
             <command_interface name="effort">
                 <param name="min">-100</param>
@@ -166,14 +154,6 @@
             <state_interface name="position"/>
         </joint>
         -->
-        <joint name="drum_front_joint">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
-        </joint>
         <joint name="drum_back_joint">
             <command_interface name="velocity">
                 <param name="min">-1</param>
@@ -182,13 +162,71 @@
             <state_interface name="velocity"/>
             <state_interface name="position"/>
         </joint>
-        
+
+        <joint name="joint1">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint2">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint3">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint4">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint5">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="grabber_joint1">
+            <command_interface name="effort">
+                <param name="min">-0.02</param>
+                <param name="max">0.0224</param>
+            </command_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="grabber_joint2">
+            <command_interface name="effort">
+                <param name="min">-0.02</param>
+                <param name="max">0.0224</param>
+            </command_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="effort"/>
+        </joint>
     </ros2_control>
 
     <gazebo>
         <!-- Joint state publisher -->
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <parameters>$(find ezrassor_robot_description)/config/ezrassor_basic_controllers.yaml</parameters>
+            <parameters>$(find ezrassor_robot_description)/config/ezrassor_paver_controllers.yaml</parameters>
         </plugin>
     </gazebo>
 

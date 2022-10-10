@@ -3,6 +3,7 @@
 # 
 # Written by Robert Forristall
 
+from ast import arguments
 import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -24,6 +25,9 @@ def generate_launch_description():
         xacro.process_file(
             os.path.join(pkg_self, 'urdf', 'ezrassor.xacro')
         ).toxml()}
+
+    # Get the world file
+    #world_file = os.path.join(pkg_self, 'world', 'base.world')
 
     # Get filepath for ros2_controllers config
     # controllers = os.path.join(pkg_self, 'config/default_position_controllers.yaml')

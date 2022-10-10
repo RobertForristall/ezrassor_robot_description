@@ -4,9 +4,10 @@
 
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/macros.xacro"/>
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/wheel.xacro"/>
-    <xacro:include filename="$(find ezrassor_robot_description)/urdf/ezrassor_basic.gazebo"/>
+    <xacro:include filename="$(find ezrassor_robot_description)/urdf/ezrassor_paver.gazebo"/>
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/drum_arm.xacro"/>
     <xacro:include filename="$(find ezrassor_robot_description)/urdf/drum.xacro"/>
+    <xacro:include filename="$(find ezrassor_robot_description)/urdf/paver_arm.xacro"/>
 
     <!--Base Link-->
     <link name='base_link'>
@@ -81,12 +82,101 @@
     <xacro:wheel side="right" pos="front"/>
     <xacro:wheel side="right" pos="back"/>
     
-    <xacro:drum_arm pos="front"/>
+    
     <xacro:drum_arm pos="back"/>
     
-    <xacro:drum pos="front"/>
     <xacro:drum pos="back"/>
+    
+    <xacro:paver_arm model="original"/>
 
+    <link name="arm_camera">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="0.1"/>
+            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="0.04 0.0 -0.04" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <xacro:arm_camera/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <xacro:arm_camera/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="platform">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="-0.5 0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <xacro:platform/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.5 0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 1.0 0.1"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="arm_front">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="0.2 0 0" rpy="0 -0.6 0"/>
+            <geometry>
+                <xacro:drum_arm_mesh/>
+            </geometry>
+            <material name="">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+                <texture filename=""/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.2 0 0" rpy="0 -0.6 0"/>
+            <geometry>
+                <xacro:drum_arm_mesh/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="joint0.1" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="arm_front"/>
+        <axis xyz="0.0 0.0 0.0"/>
+        <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <joint name="arm_camera_joint" type="fixed">
+        <origin xyz="0.0 0.4 0.0" rpy="0.0 0.4 0.0"/>
+        <parent link="link1"/>
+        <child link="arm_camera"/>
+        <axis xyz="0.0 0.0 0.0"/>
+        <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <joint name="platform_joint" type="fixed">
+        <origin xyz="0.6 0.0 0.1" rpy="0.0 0.0 0.0"/>
+        <parent link="link1"/>
+        <child link="platform"/>
+        <axis xyz="0.0 0.0 0.0"/>
+        <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+    </joint>
+    
     <joint name="imu_joint" type="fixed">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
@@ -129,15 +219,6 @@
             <state_interface name="velocity"/>
             <state_interface name="position"/>
         </joint>
-        <joint name="arm_front_joint">
-            <command_interface name="effort">
-                <param name="min">-100</param>
-                <param name="max">100</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
-            <state_interface name="effort"/>
-        </joint>
         <joint name="arm_back_joint">
             <command_interface name="effort">
                 <param name="min">-100</param>
@@ -166,14 +247,6 @@
             <state_interface name="position"/>
         </joint>
         -->
-        <joint name="drum_front_joint">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
-        </joint>
         <joint name="drum_back_joint">
             <command_interface name="velocity">
                 <param name="min">-1</param>
@@ -182,13 +255,71 @@
             <state_interface name="velocity"/>
             <state_interface name="position"/>
         </joint>
-        
+
+        <joint name="joint1">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint2">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint3">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint4">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint5">
+            <command_interface name="position">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="grabber_joint1">
+            <command_interface name="effort">
+                <param name="min">-0.02</param>
+                <param name="max">0.0224</param>
+            </command_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="grabber_joint2">
+            <command_interface name="effort">
+                <param name="min">-0.02</param>
+                <param name="max">0.0224</param>
+            </command_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="effort"/>
+        </joint>
     </ros2_control>
 
     <gazebo>
         <!-- Joint state publisher -->
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <parameters>$(find ezrassor_robot_description)/config/ezrassor_basic_controllers.yaml</parameters>
+            <parameters>$(find ezrassor_robot_description)/config/ezrassor_paver_controllers.yaml</parameters>
         </plugin>
     </gazebo>
 

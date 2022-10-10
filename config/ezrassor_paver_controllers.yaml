@@ -13,21 +13,22 @@ controller_manager:
     diff_drive_base_controller:
       type: diff_drive_controller/DiffDriveController
 
-    # Drum arm controllers
-    arm_front_controller:
-      type: effort_controllers/JointGroupEffortController
-      #type: velocity_controllers/JointGroupVelocityController
-
+    # Drum arm controller
     arm_back_controller:
       type: effort_controllers/JointGroupEffortController
       #type: velocity_controllers/JointGroupVelocityController
 
-    # Drum controllers
-    drum_front_controller:
-      type: velocity_controllers/JointGroupVelocityController
-
+    # Drum controller
     drum_back_controller:
       type: velocity_controllers/JointGroupVelocityController
+
+    # Paver arm controller
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    # Gripper controller
+    gripper_effort_controller:
+      type: effort_controllers/JointGroupEffortController
 
 diff_drive_base_controller:
   ros__parameters:
@@ -77,19 +78,6 @@ diff_drive_base_controller:
     angular.z.max_jerk: 0.0
     angular.z.min_jerk: 0.0
 
-arm_front_controller:
-  ros__parameters:
-    joints:
-      - arm_front_joint
-    command_interfaces:
-      - effort
-    #  - velocity
-    state_interfaces:
-      - position
-      - velocity
-      - effort
-    pid: {p: 100.0, i: 0.01, d: 10.0}
-
 arm_back_controller:
   ros__parameters:
     joints:
@@ -103,16 +91,6 @@ arm_back_controller:
       - effort
     pid: {p: 100.0, i: 0.01, d: 10.0}
 
-drum_front_controller:
-  ros__parameters:
-    joints:
-      - drum_front_joint
-    command_interfaces:
-      - velocity
-    state_interfaces:
-      - position
-      - velocity
-
 drum_back_controller:
   ros__parameters:
     joints:
@@ -122,3 +100,44 @@ drum_back_controller:
     state_interfaces:
       - position
       - velocity
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    open_loop_control: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      joint1:
+        trajectory: 0.05
+        goal: 0.03
+    gains:
+      joint1: {p: 100.0, d: 0.0, i: 0.0}
+      joint2: {p: 100.0, d: 0.0, i: 0.0}
+      joint3: {p: 100.0, d: 0.0, i: 0.0}
+      joint4: {p: 100.0, d: 0.0, i: 0.0}
+      joint5: {p: 100.0, d: 0.0, i: 0.0}
+
+gripper_effort_controller:
+  ros__parameters:
+    joints:
+      - grabber_joint1
+      - grabber_joint2
+    pid: {p: 100.0, i: 0.01, d: 10.0}

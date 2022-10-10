@@ -1,7 +1,12 @@
+# Drum arm driver for the ezrassor rover in gazebo simulation
+# Used to simplify command calls to each joint
+# Written by Robert Forristall
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64, Float64MultiArray
 
+# Main driver class
 class DrumArmDriver(Node):
 
     def __init__(self):
@@ -9,6 +14,7 @@ class DrumArmDriver(Node):
 
         self.logger = self.get_logger()
         
+        # Front arm subscriber and publisher
         self.front_sub = self.create_subscription(
             Float64,
             "drum_arm_front_command",
@@ -21,6 +27,7 @@ class DrumArmDriver(Node):
             10
         )
 
+        # Back drum arm subscriber and publisher
         self.back_sub = self.create_subscription(
             Float64,
             "drum_arm_back_command",
@@ -33,6 +40,7 @@ class DrumArmDriver(Node):
             10
         )
 
+    # Subscriber callback functions to publish to the ros2 controller
     def handle_front_command(self, msg):
         new_msg = Float64MultiArray()
         new_msg.data = [msg.data]
@@ -43,6 +51,7 @@ class DrumArmDriver(Node):
         new_msg.data = [msg.data]
         self.back_pub.publish(new_msg)
 
+# Entry point of node
 def main(args=None):
 
     try:

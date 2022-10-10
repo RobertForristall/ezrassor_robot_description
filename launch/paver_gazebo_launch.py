@@ -23,15 +23,18 @@ def generate_launch_description():
     pkg_auto = get_package_share_directory('ezrassor_autonomous_control')
     pkg_key_listener = get_package_share_directory('keyboard_listener')
 
-    basic_model = 'ezrassor_basic.xacro'
+    #paver_model = 'ezrassor_paver.xacro'
+    paver_model = 'ezrassor_prototype.xacro'
 
     # Generate robot description based on model launch condition
-    model_description_basic = {'robot_description': 
+    model_description_paver = {'robot_description': 
         xacro.process_file(
-            os.path.join(pkg_self, 'urdf', basic_model)
+            os.path.join(pkg_self, 'urdf', paver_model)
         ).toxml()}
 
     world_file = os.path.join(pkg_self, 'worlds', 'base.world')
+
+    # Include Moveit configuration for paver arm
 
     # Include the gazebo launch to load the simulation
     gazebo = IncludeLaunchDescription(
@@ -39,6 +42,7 @@ def generate_launch_description():
             os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
         ),
         launch_arguments={"world": world_file}.items()
+        #launch_arguments={"world" : world_file, 'verbose': 'true'}.items()
     )   
 
     auto_launch = IncludeLaunchDescription(
@@ -54,14 +58,13 @@ def generate_launch_description():
     )
 
     # Launch robot state publisher
-    robot_state_publisher_basic = Node(
+    robot_state_publisher_paver = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
         output='screen',
-        parameters=[model_description_basic],
+        parameters=[model_description_paver],
     )
-
 
     # Spawn the model using the spawn entity node
     spawn_entity = Node(
@@ -90,27 +93,27 @@ def generate_launch_description():
         output='screen'
     )
 
-    arm_front = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'arm_front_controller'],
-        output='screen',
-    )
-
     arm_back = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'arm_back_controller'],
         output='screen'
     )
 
-    drum_front = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'drum_front_controller'],
-        output='screen',
-    )
-
     drum_back = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'drum_back_controller'],
+        output='screen'
+    )
+
+    paver_arm = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'joint_trajectory_controller'],
+        output='screen'
+    )
+
+    grippers = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'gripper_effort_controller'],
         output='screen'
     )
 
@@ -139,15 +142,15 @@ def generate_launch_description():
             on_exit=[
                 joint_state_broad, 
                 diff_drive, 
-                arm_front, 
-                arm_back, 
-                drum_front, 
+                arm_back,  
                 drum_back,
                 wheel_driver,
                 drum_arm_driver,
                 drum_driver,
                 auto_launch,
-                keyboard_listener
+                keyboard_listener,
+                paver_arm,
+                grippers
             ]
         )
     )
@@ -159,9 +162,9 @@ def generate_launch_description():
         DeclareLaunchArgument('target_y', default_value='5'),
         DeclareLaunchArgument('world', default_value=world_file),
         DeclareLaunchArgument('controls', default_value='auto'),
-        DeclareLaunchArgument('model', default_value='basic'),
+        DeclareLaunchArgument('model', default_value='paver'),
         gazebo,
-        robot_state_publisher_basic,
+        robot_state_publisher_paver,
         spawn_entity,
         delay_controller_after_spawn
     ])
